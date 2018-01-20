@@ -1,0 +1,62 @@
+/**
+ * Write your model definitions here
+ */
+
+namespace ie.airman.demo
+
+abstract participant User identified by userID {
+  o String userID
+}
+
+
+participant Airline extends User {
+
+}
+
+participant MaintenanceCompany extends User {
+  
+}
+
+participant InsuranceCompany extends User {
+
+}
+
+participant Regulator extends User {
+  
+}
+
+asset Plane identified by planeId {
+  o String planeId
+  --> Part[] parts
+
+  --> Airline owner
+}
+
+enum PartStatus {
+  o GOOD
+  o TO_REPLACE
+}
+asset Part identified by partId {
+  o String partId
+
+  o String name
+  o PartStatus status
+
+  o MaintenanceLogNotarisation[] maintenanceLogsNotarisation
+}
+
+concept MaintenanceLogNotarisation {
+  o DateTime timestamp
+  --> MaintenanceCompany MaintenanceCompany
+  o String description
+}
+
+transaction DemoSetup {
+  
+}
+
+transaction PlaneMaintenance {
+  --> Plane plane
+  --> MaintenanceCompany maintenanceCompany
+  o String description
+}
